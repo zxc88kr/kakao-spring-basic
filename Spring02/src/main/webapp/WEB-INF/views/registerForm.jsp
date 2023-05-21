@@ -81,7 +81,7 @@
 		<div id="msg" class="msg">
 			<c:if test="${not empty param.msg}">
 				<i class="fa fa-exclamation-circle">
-					${URLDecoder.decode(param.msg)}</i>
+					${URLDecoder.decode(param.msg, "utf-8")}</i>
 			</c:if>
 		</div>
 		<label for="">아이디</label> <input class="input-field" type="text"
