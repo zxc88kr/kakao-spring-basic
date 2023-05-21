@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=utf-8"%>
-<%@ page import="java.util.Random" %>
+<%@ page import="java.util.Random"%>
 <%-- <%! 클래스 영역 %> --%>
 <%!
 	int getRandomInt(int range) {

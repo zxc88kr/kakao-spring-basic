@@ -11,21 +11,24 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
-@WebFilter(urlPatterns="/*")
+@WebFilter(urlPatterns = "/*")
 public class PerformanceFilter implements Filter {
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException { }
+	public void init(FilterConfig filterConfig) throws ServletException {
+	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 		long startTime = System.currentTimeMillis();
-		
-		chain.doFilter(request, response); 
-		
-		System.out.print("[" + ((HttpServletRequest)request).getRequestURI() + "]");
+
+		chain.doFilter(request, response);
+
+		System.out.print("[" + ((HttpServletRequest) request).getRequestURI() + "]");
 		System.out.println(" 소요시간=" + (System.currentTimeMillis() - startTime) + "ms");
 	}
 
 	@Override
-	public void destroy() { }
+	public void destroy() {
+	}
 }

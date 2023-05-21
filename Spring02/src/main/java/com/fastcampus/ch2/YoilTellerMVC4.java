@@ -5,30 +5,32 @@ import java.util.Calendar;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class YoilTellerMVC2 {
+public class YoilTellerMVC4 {
 	@ExceptionHandler(Exception.class)
 	public String catcher(Exception ex) {
+		System.out.println("ex=" + ex);
+
 		return "yoilError";
 	}
 
-	@RequestMapping("/getYoilMVC2")
-	public String main(@RequestParam(required = true) int year, @RequestParam(required = true) int month,
-			@RequestParam(required = true) int day, Model model) {
-		if (!isValid(year, month, day))
+	@RequestMapping("/getYoilMVC4")
+	public String main(@ModelAttribute MyDate date, Model m) {
+		System.out.println("myDate=" + date);
+
+		if (!isValid(date))
 			return "yoilError";
 
-		char yoil = getYoil(year, month, day);
+		char yoil = getYoil(date);
 
-		model.addAttribute("year", year);
-		model.addAttribute("month", month);
-		model.addAttribute("day", day);
-		model.addAttribute("yoil", yoil);
+		return "yoil";
+	}
 
-		return "yoil"; // /WEB-INF/views/yoil.jsp
+	private @ModelAttribute("yoil") char getYoil(MyDate date) {
+		return getYoil(date.getYear(), date.getMonth(), date.getDay());
 	}
 
 	private char getYoil(int year, int month, int day) {
@@ -37,6 +39,10 @@ public class YoilTellerMVC2 {
 
 		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 		return " 일월화수목금토".charAt(dayOfWeek);
+	}
+
+	private boolean isValid(MyDate date) {
+		return isValid(date.getYear(), date.getMonth(), date.getDay());
 	}
 
 	private boolean isValid(int year, int month, int day) {

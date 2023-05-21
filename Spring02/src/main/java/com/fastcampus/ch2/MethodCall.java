@@ -21,28 +21,28 @@ public class MethodCall {
 
 		ModelController mc = new ModelController();
 		String viewName = mc.main(map);
-		
+
 		System.out.println("after: " + map);
-		
+
 		render(map, viewName);
 	}
-	
+
 	static void render(HashMap map, String viewName) throws IOException {
 		String result = "";
-		
+
 		Scanner sc = new Scanner(new File(viewName + ".txt"));
-		
+
 		while (sc.hasNextLine())
 			result += sc.nextLine() + System.lineSeparator();
-		
-		Iterator it = map.keySet().iterator();
-		
-		while (it.hasNext()) {
-			String key = (String)it.next();
 
-			result = result.replace("${" + key + "}", (String)map.get(key));
+		Iterator it = map.keySet().iterator();
+
+		while (it.hasNext()) {
+			String key = (String) it.next();
+
+			result = result.replace("${" + key + "}", (String) map.get(key));
 		}
-		
+
 		System.out.println(result);
 	}
 }

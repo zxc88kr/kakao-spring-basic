@@ -14,7 +14,7 @@ public class HelloServlet extends HttpServlet {
 	public void init() throws ServletException {
 		System.out.println("[HelloServlet] init() is called.");
 	}
-	
+
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("[HelloServlet] service() is called.");

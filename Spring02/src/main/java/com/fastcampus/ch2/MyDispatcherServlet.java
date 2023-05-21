@@ -24,21 +24,21 @@ public class MyDispatcherServlet extends HttpServlet {
 		Map map = request.getParameterMap();
 		Model model = null;
 		String viewName = "";
-		
+
 		try {
 			Class clazz = Class.forName("com.fastcampus.ch2.YoilTellerMVC");
 			Object obj = clazz.newInstance();
-			
+
 			Method main = clazz.getDeclaredMethod("main", int.class, int.class, int.class, Model.class);
-			
+
 			Parameter[] paramArr = main.getParameters();
 			Object[] argArr = new Object[main.getParameterCount()];
-			
+
 			for (int i = 0; i < paramArr.length; i++) {
 				String paramName = paramArr[i].getName();
 				Class paramType = paramArr[i].getType();
 				Object value = map.get(paramName);
-				
+
 				if (paramType == Model.class) {
 					argArr[i] = model = new BindingAwareModelMap();
 				} else if (paramType == HttpServletRequest.class) {
@@ -46,52 +46,52 @@ public class MyDispatcherServlet extends HttpServlet {
 				} else if (paramType == HttpServletResponse.class) {
 					argArr[i] = response;
 				} else if (value != null) {
-					String strValue = ((String[])value)[0];
+					String strValue = ((String[]) value)[0];
 					argArr[i] = convertTo(strValue, paramType);
 				}
 			}
-			viewName = (String)main.invoke(obj, argArr);
+			viewName = (String) main.invoke(obj, argArr);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		render(model, viewName, response);
 	}
-	
+
 	private Object convertTo(Object value, Class type) {
 		if (type == null || value == null || type.isInstance(value))
 			return value;
-		
+
 		if (String.class.isInstance(value) && type == int.class) {
-			return Integer.valueOf((String)value);
+			return Integer.valueOf((String) value);
 		} else if (String.class.isInstance(value) && type == double.class) {
-			return Double.valueOf((String)value);
+			return Double.valueOf((String) value);
 		}
-		
+
 		return value;
 	}
-		
+
 	private String getResolvedViewName(String viewName) {
 		return getServletContext().getRealPath("/WEB-INF/views") + "/" + viewName + ".jsp";
 	}
-	
+
 	private void render(Model model, String viewName, HttpServletResponse response) throws IOException {
 		String result = "";
-		
+
 		response.setContentType("text/html");
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
-		
+
 		Scanner sc = new Scanner(new File(getResolvedViewName(viewName)), "utf-8");
-		
+
 		while (sc.hasNextLine())
 			result += sc.nextLine() + System.lineSeparator();
-		
+
 		Map map = model.asMap();
-		
+
 		Iterator it = map.keySet().iterator();
-		
+
 		while (it.hasNext()) {
-			String key = (String)it.next();
+			String key = (String) it.next();
 			result = result.replace("${" + key + "}", map.get(key) + "");
 		}
 		out.println(result);

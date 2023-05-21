@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class YoilTellerMVC {
 	@RequestMapping("/getYoilMVC")
 	public String main(int year, int month, int day, Model model) throws IOException {
-		if (!isValid(year, month, day)) return "yoilError";
-		
+		if (!isValid(year, month, day))
+			return "yoilError";
+
 		char yoil = getYoil(year, month, day);
-		
+
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 		model.addAttribute("day", day);
 		model.addAttribute("yoil", yoil);
-		
+
 		return "yoil";
 	}
 
@@ -30,7 +31,7 @@ public class YoilTellerMVC {
 	private char getYoil(int year, int month, int day) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month - 1, day);
-		
+
 		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 		return " 일월화수목금토".charAt(dayOfWeek);
 	}
