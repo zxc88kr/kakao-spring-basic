@@ -2,6 +2,9 @@ package com.fastcampus.ch2;
 
 import java.net.URLEncoder;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,14 +17,19 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public String login(String id, String pwd, boolean rememberId) throws Exception {
-		System.out.println("id=" + id);
-		System.out.println("pwd=" + pwd);
-		System.out.println("rememberId=" + rememberId);
-		
+	public String login(String id, String pwd, boolean rememberId, HttpServletResponse response) throws Exception {
 		if (!loginCheck(id, pwd)) {
 			String msg = URLEncoder.encode("id 또는 pwd가 일치하지 않습니다.", "utf-8");
 			return "redirect:/login?msg=" + msg;
+		}
+		
+		if (rememberId) {
+			Cookie cookie = new Cookie("id", id);
+			response.addCookie(cookie);
+		} else {
+			Cookie cookie = new Cookie("id", id);
+			cookie.setMaxAge(0);
+			response.addCookie(cookie);
 		}
 		
 		return "redirect:/";
