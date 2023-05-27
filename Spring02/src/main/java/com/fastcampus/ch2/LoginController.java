@@ -17,7 +17,7 @@ public class LoginController {
 	public String loginForm() {
 		return "loginForm";
 	}
-	
+
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -25,7 +25,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public String login(String id, String pwd, boolean rememberId, HttpServletRequest request,
+	public String login(String id, String pwd, String toURL, boolean rememberId, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		if (!loginCheck(id, pwd)) {
 			String msg = URLEncoder.encode("id 또는 pwd가 일치하지 않습니다.", "utf-8");
@@ -44,7 +44,9 @@ public class LoginController {
 			response.addCookie(cookie);
 		}
 
-		return "redirect:/";
+		toURL = toURL == null | toURL.equals("") ? "/" : toURL;
+
+		return "redirect:" + toURL;
 	}
 
 	private boolean loginCheck(String id, String pwd) {

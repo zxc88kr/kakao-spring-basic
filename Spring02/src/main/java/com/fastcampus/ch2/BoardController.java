@@ -13,7 +13,7 @@ public class BoardController {
 	@GetMapping("/list")
 	public String list(HttpServletRequest request) {
 		if (!loginCheck(request))
-			return "redirect:/login";
+			return "redirect:/login?toURL=" + request.getRequestURL();
 		return "boardList";
 	}
 
