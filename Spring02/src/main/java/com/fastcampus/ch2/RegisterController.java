@@ -29,12 +29,20 @@ public class RegisterController {
 //	@PostMapping("/register/save")
 	@RequestMapping(value = "/register/save", method = RequestMethod.POST)
 	public String save(User user, BindingResult result, Model model) throws Exception {
+		/*
+		 * UserValidator userValidator = new UserValidator();
+		 * userValidator.validate(user, result);
+		 * 
+		 * if (result.hasErrors()) { return "registerForm"; }
+		 */
+
 		if (!isValid(user)) {
 			String msg = URLEncoder.encode("id를 잘못입력하셨습니다.", "utf-8");
 
 			model.addAttribute("msg", msg);
-			return "forward:/register/add";
+			return "redirect:/register/add"; // 신규회원 가입화면으로 이동(redirect)
 		}
+
 		return "registerInfo";
 	}
 
